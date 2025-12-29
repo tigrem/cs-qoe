@@ -1,0 +1,89 @@
+// apply plugin: 'com.android.library'
+
+// group = 'expo.modules.callmetrics'
+// version = '0.1.0'
+
+// def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
+// apply from: expoModulesCorePlugin
+// applyKotlinExpoModulesCorePlugin()
+// useCoreDependencies()
+// useExpoPublishing()
+
+// // If you want to use the managed Android SDK versions from expo-modules-core, set this to true.
+// // The Android SDK versions will be bumped from time to time in SDK releases and may introduce breaking changes in your module code.
+// // Most of the time, you may like to manage the Android SDK versions yourself.
+// def useManagedAndroidSdkVersions = false
+// if (useManagedAndroidSdkVersions) {
+//   useDefaultAndroidSdkVersions()
+// } else {
+//   buildscript {
+//     // Simple helper that allows the root project to override versions declared by this library.
+//     ext.safeExtGet = { prop, fallback ->
+//       rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+//     }
+//   }
+//   project.android {
+//     compileSdkVersion safeExtGet("compileSdkVersion", 36)
+//     defaultConfig {
+//       minSdkVersion safeExtGet("minSdkVersion", 24)
+//       targetSdkVersion safeExtGet("targetSdkVersion", 36)
+//     }
+//   }
+// }
+
+// android {
+//   namespace "expo.modules.callmetrics"
+//   defaultConfig {
+//     versionCode 1
+//     versionName "0.1.0"
+//   }
+//   lintOptions {
+//     abortOnError false
+//   }
+// }
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+group = 'expo.modules.callmetrics'
+version = '0.1.0'
+
+// Load Expo Modules Core Plugin
+def expoModulesCorePlugin = new File(project(":expo-modules-core").projectDir.absolutePath, "ExpoModulesCorePlugin.gradle")
+apply from: expoModulesCorePlugin
+applyKotlinExpoModulesCorePlugin()
+useCoreDependencies()
+// Removed useExpoPublishing() as it often causes the "SoftwareComponent" error in local dev builds
+
+android {
+    // This must match the package folder: CallMetrics/android/src/main/java/expo/modules/callmetrics
+    namespace "expo.modules.callmetrics" 
+    
+    compileSdkVersion 36
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 36
+        versionCode 1
+        versionName "0.1.0"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    // This helps resolve the "SoftwareComponent" error in some Gradle versions
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+}
+
+dependencies {
+    // Use the specific versions shown in your terminal logs
+    implementation "com.facebook.react:react-android"
+    implementation "com.google.android.gms:play-services-location:21.0.1"
+    
+    // Hardcoding the kotlin version to 2.1.20 to match your project logs
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.1.20"
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
+}
