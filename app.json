@@ -37,11 +37,11 @@
     "runtimeVersion": {
       "policy": "appVersion"
     },
+    "owner": "tigrem",
     "extra": {
       "eas": {
         "projectId": "32ceb88a-2977-4977-8add-bbcead3c39cf"
       }
-    },
-    "owner": "tigrem"
+    }
   }
 }
